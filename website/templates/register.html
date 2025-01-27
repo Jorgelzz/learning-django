@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container-fluid offset-md-3 col-md-6">
+
+    <form action="{% url 'home' %}" method="POST" class=''>
+        {% csrf_token  %}
+        <div class="mb-3">
+            <label for="" class="form-label">Name address</label>
+            <input type="text" class="form-control" name="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        
+        <div>
+            <a href="{% url 'home' %}">Already have an account?</a>
+        </div>
+    </form>
+    
+</div>
+{% endblock %}
