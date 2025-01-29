@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .models import Record
 from .forms import  SignUpForm
+
 
 
 # Create your views here.
 
 def home(request):
+
+    records = Record.objects.all()
 
     # Check to see if logged
 
@@ -29,7 +33,7 @@ def home(request):
             messages.success(request, "There's something missing!!")
             return redirect('home')
     else:        
-        return render(request, 'home.html', {})
+        return render(request, 'home.html', {'records':records})
 
 def logout_user(request):
     
@@ -58,3 +62,23 @@ def register(request):
         form = SignUpForm
         return render(request, 'register.html', {'form':form})
     return render(request, 'register.html', {'form':form})
+
+
+
+def customer_record(request,pk):
+    if request.user.is_authenticated:
+        customer_record = Record.objects.get(id=pk)
+        return render(request, 'record.html', {'customer_record':customer_record})
+    else:
+            messages.success(request, 'Logged....')
+            return redirect('home')
+
+
+def delete_record(request,pk):
+    if request.user.is_authenticated:
+        delete_id = Record.objects.get(id=pk)
+        delete_id.delete()
+        messages.success(request, 'Gone, reduced to atoms....')
+        return redirect('home')
+    else:
+        return redirect('home')
